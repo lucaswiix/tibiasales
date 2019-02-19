@@ -60,21 +60,17 @@
                         </a>
                     </div>
                 </div>
+
+                <input hidden type="checkbox" name="remember" checked>
                 
-                <input hidden type="checkbox" name="remember" checked>
-
-                <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-                <input type="hidden" name="action" value="validate_captcha">
-
-                <input hidden type="checkbox" name="remember" checked>
-
-
+        
                 <div class="form-group">
                     <button type="submit" class="btn-fazerLogin">
                     <i class="fas fa-sign-in-alt"></i>
                     Entrar</button>
                 </div>
             </form>
+            
             <div class="spacediv"></div>
             
             
@@ -87,17 +83,4 @@
 </div>
 </div>
 @endsection
-@section('js')
-<script src="https://www.google.com/recaptcha/api.js?render=6Lfm1JEUAAAAABTJkRKTaW2rbVvuASjoOwWTeFLl"></script>
-<script>
-    grecaptcha.ready(function() {
-    // do request for recaptcha token
-    // response is promise with passed token
-        grecaptcha.execute('6Lfm1JEUAAAAABTJkRKTaW2rbVvuASjoOwWTeFLl', {action:'validate_captcha'})
-                  .then(function(token) {
-            // add token value to form
-            document.getElementById('g-recaptcha-response').value = token;
-        });
-    });
-</script>
-@endsection
+ 

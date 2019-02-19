@@ -5,6 +5,8 @@
 	@include('components/navbar_1')
 </nav>
 @endsection
+@section('background-pg', 'background-color:#e9eaee !important;background-image:none;')
+
 @section('main_content')
 <div class="allanunc" >
 	<div class="container" style="text-align: center;">
@@ -144,7 +146,7 @@
 								</div>
 								<div class="price">
 									<small>Preço</small>
-									<span class="value">R$ {{$char->price}}</span>
+									<span class="value">{{$char->moeda}} {{$char->price}}</span>
 									{{-- <small>U$ 450</small> --}}<br>
 									
 									<div class="next-button">
@@ -173,10 +175,10 @@
 											<img src="{{asset('img/serviceid_1.png')}}">
 										</div>
 										<h2>Simples<br><span>50 Tibia Coins</span></h2>
-										<p> Deixa o seu anuncio disponivél por <b>15</b> dias.</p>
+										<p> Deixa o seu anúncio disponível por <b>15</b> dias.</p>
 										<span style="margin-top:20px;">
 											<ul style="color:#000;">
-												<input type="radio" name="pacote" id="50" value="1">
+												<input type="radio" class="pacotex" name="pacote" id="50" value="1">
 												<label for="50"><b>Escolher</b></label>
 											</ul>
 										</span>
@@ -189,10 +191,10 @@
 												<img src="{{asset('img/serviceid_4.png')}}">
 											</div>
 											<h2>Especial<br><span style="background-color:#C87A00;">100 Tibia Coins</span></h2>
-											<p> Deixa o seu anuncio disponivél por <b>30</b> dias em <font color="#C87A00"><b>destaque</b></font> que aumenta a chance de venda.</p>
+											<p> Deixa o seu anúncio disponível por <b>30</b> dias em <font color="#C87A00"><b>destaque</b></font>, aumentando a chance de venda.</p>
 											<span style="margin-top:20px;">
 												<ul style="color:#000;">
-													<input type="radio" class="pacote100" name="pacote" id="100" value="2">
+													<input type="radio" class="pacote100 pacotex" name="pacote" id="100" value="2">
 													<label for="100"><b>Escolher</b></label>
 												</ul>
 											</span>
@@ -208,12 +210,18 @@
 									<br><br>
 									<p>Faça a transferencia partindo do personagem anunciado.</p><br>
 									<h4>De: <font color="red"><b>{{$char->name}}</b></font></h4>
-									<h4>Para: <font color="red"><b><a style="color:red;" href="https://www.tibia.com/community/?subtopic=characters&name=Adver+Tising" target="_blank">Adver Tising</a></b></font></h4>
+									<h4>Para: <font color="red"><b><a style="color:red;" href="https://www.tibia.com/community/?subtopic=characters&name={{Config::get('app.receive_coins_url')}}" target="_blank">{{Config::get('app.receive_coins_name')}}</a></b></font></h4>
+									<h4>Valor: <font color="red"><b><span id="adprice">50</span> Tibia Coins</b></font></h4>
 									
 									<div style="margin-top:50px;">
 										<h3>3. Confirme a transferencia</h3>
-										<p>Agradeçemos de coração por sua doação! <br><b>Em até 6 horas o seu anuncio já estará ativo.</b> Obrigado <3 </p>
+										<p>Agradeçemos de coração por sua doação! <br><b>Em até 6 horas o seu anuncio já estará ativo.</b> Obrigado <3 </p><br>
+											<div class="form-group">
+												<label for="confirm-coins" style="font-weight: 700;color:red;border:solid 1px #000;padding:20px;">
+									<input type="checkbox" id="confirm-coins" value="1" name="confirm" required> Eu confirmo que já transferi os coins.</label>
 									</div>
+									</div>
+
 
 									<div class="footer" style="right:0;bottom:0;margin-bottom:20px;margin-top:3em;float:right;margin-right:20px;">
 										<span><b>Hey, confirme aqui!</b></span><br>										
@@ -242,6 +250,7 @@
 			</div>
 		</div>
 		@endsection
+
 		@section('footer')
 		<div class="" style="height:100px;margin-top:4em;bottom:0;text-align: center;">
 			<div class="container">
@@ -249,3 +258,23 @@
 			</div>
 		</div>
 		@endsection
+	@section('js')
+		<script>
+			$('.pacotex').click(function(){
+				var valor = $( this ).val();
+				if(valor == 1)
+				{
+					valor = 50;
+				}else if (valor == 2) {
+					valor = 100;
+					
+				}else{
+					valor = 50;
+				}
+
+				$('#adprice').html(valor);
+
+			})
+		</script>
+
+	@endsection

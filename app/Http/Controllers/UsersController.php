@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\User;
 use DB;
 
@@ -50,7 +51,11 @@ class UsersController extends Controller
         $id = User::Where('nick', '=', $nick)->value('id');
         if(isset($id))
         {   
-            $ads['ads'] = DB::table('characters')->where('user_id', '=', $id)->paginate(8);
+            $ads['ads'] = DB::table('characters')
+            ->where('user_id', '=', $id)
+            ->where('active_days', '>', Carbon::now())
+            ->where('delete', null)
+            ->paginate(8);
             
             $rep = User::Where('id', '=', $id)->value('rep');
 

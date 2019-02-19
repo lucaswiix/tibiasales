@@ -5,6 +5,7 @@
 	@include("components/navbar_2-admin")
 </nav>
 @endsection
+@section('background-pg', 'background-color:#e9eaee !important;background-image:none;')
 
 @section('main_content')		
 
@@ -32,11 +33,10 @@
                                     <h5>
                                         {{auth::user()->nick}}
                                     </h5>
-                                    <h6>@if(auth::user()->group_id > 2)
-                                    	Administrador
-                                    	@else
-                                    	Anunciante
-                                    	@endif                                        
+                                    <h6>
+                                        @if(isset($cargo))
+                                        {{$cargo}}     
+                                        @endif                                
                                     </h6>
                                     </div>
                                     {{-- <p class="proile-rating">RANKINGS : <span>8/10</span></p> --}}

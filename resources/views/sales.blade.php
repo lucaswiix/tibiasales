@@ -78,7 +78,7 @@
 
                     <div class="no-acc">
                         <span>Não tem conta?</span>
-                        <a href="">Criar conta</a>
+                        <a href="/register">Criar conta</a>
                     </div>
                     @endif
                 </div>

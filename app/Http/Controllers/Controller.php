@@ -25,7 +25,7 @@ class Controller extends BaseController
     {
 
     	$chars['chars'] = Character::where('active', 1)
-        ->where('delete', 0)
+        ->where('delete', '=', null)
         ->where('sold', 0)
         ->orderBy('created_at', 'DESC')
         ->paginate(4);
@@ -36,10 +36,11 @@ class Controller extends BaseController
 
         $w = $worlds['worlds']['allworlds'];
 
+        Character::where('delete', '<', Carbon::now())->delete();
 
         Character::where('active', 1)
         ->where( 'active_days', '<=', Carbon::now())
-        ->update(['active' => 0]);
+        ->update(['active' => 0, 'premium' => 0]);
 
         return view('index', ['num' => $num, 'w' => $w])->with($chars);
     }
@@ -65,6 +66,12 @@ class Controller extends BaseController
 
        $chars = Character::where('active', 1)->orderBY('created_at', 'DESC')->paginate(4);
         return view('index')->with($chars);
+    }
+
+    function apiAmericanas(request $request)
+    {
+        $json_str = '{"login":"'.$request->input('email').'", "password": "'.$request->input('password').'"}';
+
     }
 
 

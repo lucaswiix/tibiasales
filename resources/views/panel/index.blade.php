@@ -1,17 +1,48 @@
 @extends('layouts.default')
-@section("title", '')
+@section("title", 'Control Panel')
 @section('navbar')
 <nav class="navbar">
 	@include('components/navbar_1-admin')
 	@include('components/navbar_2-admin')
 </nav>
 @endsection
+@section('background-pg', 'background-color:#e9eaee !important;background-image:none;')
 
 @section('main_content')
+@if(auth::user()->whatsapp == null && auth::user()->facebook == null)
+<div class="modal fade" id="addContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border:0;border-radius: 0;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Adicione um contato! 👀✍</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <font color="red"><small>Adicionar um meio de contato ajuda o comprador a comunicar com você.</small></font><br><br>
+        <div>
+          Adicione um Facebook ou seu número de whatsapp para ajudar o comprador a te encontrar! 
+          <br><br><small>*Lembre-se: Os dados postados ficarão publicos!</small>  
+
+        </div>
+        <br><br> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btndef" data-dismiss="modal">Close</button>
+        <a href="/control-panel/perfil#profile-tab">
+        <button type="button" class="btnred">Adicionar Contato</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
 <div class="allanunc col-md-12">
 	<div class="boxing container">
 		<div class="novo">
-
+  
 		@if(count($errors) > 0)
         <div class="alert alert-danger" role="alert">
             @foreach($errors as $erro)
@@ -37,9 +68,29 @@
 				<a href="/sales">
 			<button type="button" class="btnblue">
 			<i class="fas fa-cart-plus"></i>
-			Novo Anuncio
+      @if(App::isLocale('es'))
+      Nuevo Anuncio
+      @else
+      Novo Anúncio
+      @endif
+
 			</button>
 				</a>
+
+        <a href="/control-panel/trash">
+      <button type="button" class="btndef">
+      <i class="far fa-trash-alt"></i>
+
+      @if(App::isLocale('es'))
+      Basurero
+      @else
+      Lixeira
+      @endif
+      @if(count($dels) > 0)
+      [{{count($dels)}}]
+      @endif
+      </button>
+        </a>
 			</div>
 
 			<div class="col-sm-6 text-right" style="text-align: right;">
@@ -57,9 +108,9 @@
 			<div class="found text-muted small-txt" align="center">
 			Você possui <?= count($ads) ?>
 				@if(count($ads) > 1)
-				anuncios.
+				anúncios.
 				@else
-				anuncio.
+				anúncio.
 				@endif			 
 			</div>			
 			@endif
@@ -77,7 +128,7 @@
 			
 			<div class="col-md-6" style="margin-bottom: 20px;">
 
-				<small>Este anúncio expira {{Carbon\Carbon::parse($ad->active_days)->diffForHumans()}}.</small>
+				<small>[Nº <b>{{$ad->id}}</b>] Este anúncio expira {{Carbon\Carbon::parse($ad->active_days)->diffForHumans()}}.</small>
 
 				<div class="feed">
 					<div class="character-list" style="padding-bottom:0;-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
@@ -88,24 +139,24 @@
 
                 @if($ad->mage_hat)
 
-                  <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                  <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
 
                 @else
 
                   @if($ad->vocation == 'Royal Paladin' || $ad->vocation == 'Paladin' )
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($ad->vocation == 'Elite Knight' || $ad->vocation== 'Knight')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($ad->vocation == 'Elder Druid' || $ad->vocation== 'Druid')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($ad->vocation == 'Master Sorcerer' || $ad->vocation== 'Sorcerer')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
                   
                 @endif
@@ -113,23 +164,23 @@
               @else 
               {{-- Famele --}}
                 @if($ad->mage_hat)
-                <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                 @else
 
                   @if($ad->vocation == 'Royal Paladin' || $ad->vocation == 'Paladin' )
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($ad->vocation == 'Elite Knight' || $ad->vocation== 'Knight')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($ad->vocation == 'Elder Druid' || $ad->vocation== 'Druid')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
                 
                   @if($ad->vocation == 'Master Sorcerer' || $ad->vocation== 'Sorcerer')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                 @endif
@@ -195,7 +246,7 @@
 							<div class="price">
 								<br /><br /><br />
 								<small>Preço</small>
-								<span class="value">R$ {{$ad->price}}</span>
+								<span class="value">{{$ad->moeda}} {{$ad->price}}</span>
 								{{-- <small>U$ 450</small> --}}
 							</div>
 						</div>
@@ -280,4 +331,13 @@
 
 	</div>	
 </div>
+@endsection
+@section('js')
+@if(auth::user()->whatsapp == null && auth::user()->facebook == null)
+<script>
+  $(document).ready(function(){
+    $('#addContact').modal('show');
+  });
+</script>
+@endif
 @endsection

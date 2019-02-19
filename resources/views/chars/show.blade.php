@@ -17,60 +17,61 @@
                     <div class="card-body">
                         <div class="card-title mb-4">
                             <div class="d-flex justify-content-start">
-                                <div class="image-container">
-                                                            @if($char->sex == 'male')
+                              <div class="image-container">
+            @if($char->sex == 'male')
+                @if($char->mage_hat)
+                 <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />  
 
-                                @if($char->mage_hat)
+                @else
 
-                                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                  @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
-                                @else
+                  @endif
 
-                                    @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
-                                    @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @endif
 
-                                    @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  @endif
 
-                                    @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
-                                    
-                                @endif
+                  @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  @endif
+                  
+                @endif
 
-                            @else 
-                            {{-- Famele --}}
-                                @if($char->mage_hat)
-                                <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                @else
+              @else 
+              {{-- Famele --}}
+                @if($char->mage_hat)
+                <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                @else
 
-                                    @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
-                                    @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @endif
 
-                                    @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
-                                
-                                    @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                                        <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
-                                    @endif
+                  @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                       @endif
 
-                                @endif
+                  @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
+                  <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                   @endif
+                
+                  @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
+                   <img src="https://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  @endif
 
-                            @endif
+                @endif
 
+              @endif
                                 </div>
+                           
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="/char/{{$char->url}}">[{{$char->vocation}}] Level {{$char->level}} - {{$char->world_type}}</a></h2>
                                     <h6 class="d-block"><a href="javascript:void(0)">Link:</a> <input type="text" value="tibiasales.com/char/{{$char->url}}" class="form-control" disabled></h6>
@@ -80,13 +81,23 @@
                                     <h6 class="d-block" style="margin-right:10px;">
                                       <form action="/control-panel/messages/interested" method="POST">
                                         {{csrf_field()}}
-                                        <input type="hidden" value="{{$char->name}}" name="charnick">
+                                        <input type="hidden" value="{{$char->id}}" name="charid">
                                         <input type="hidden" value="{{$char->user_id}}" name="userid">
                                         <button type="submit" class="btnred">Enviar Mensagem</button>
                                       </form>
                                       </a>
                                     </h6>                                    
-                                    <h6 class="d-block"><a href="javascript:void(0)"><button class="btnblue">Oferecer Proposta</button></a></h6>       
+                                    <h6 class="d-block">
+
+                                      <form action="/control-panel/messages/interested" method="POST">
+                                        {{csrf_field()}}
+                                        <input type="hidden" value="1" name="proposal">
+                                        <input type="hidden" value="{{$char->id}}" name="charid">
+                                        <input type="hidden" value="{{$char->user_id}}" name="userid">
+                                        <button type="submit" class="btnblue">Oferecer Proposta</button>
+                                      </form>
+
+                                    </h6>   
                                     </div>              
                                     @else
 
@@ -289,18 +300,30 @@
 
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
-                                                <label style="font-weight:bold;">Preço</label>
+                                                <label style="font-weight:bold;">@lang('home.price')</label>
                                             </div>
                                             <div class="col-md-8 col-6">
-                                                R$ {{$char->price}}
+                                                {{$char->moeda}} {{$char->price}}
                                             </div>
                                         </div>
                                         <hr />
 
+                                        @if($char->accept_tc == 1)
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Tibia Coins</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                {{$char->price_tc}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                      @endif
+
                                     </div>
                                     <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
                                     
-                                    @if(whatsapp($char->user_id) != NULL && facebook($char->user_id) != NULL)
+                                    @if(whatsapp($char->user_id) != NULL || facebook($char->user_id) != NULL)
 
                                       @if(whatsapp($char->user_id) != NULL)
                                         <div class="row">
@@ -420,10 +443,10 @@
 <p class="text-center">Copyright @2019 | Designed With by <a href="/">TibiaSales</a></p>
 
 {{-- <ul class="social_footer_ul">
-<li><a href="http://kalarikendramdelhi.com"><i class="fab fa-facebook-f"></i></a></li>
-<li><a href="http://kalarikendramdelhi.com"><i class="fab fa-twitter"></i></a></li>
-<li><a href="http://kalarikendramdelhi.com"><i class="fab fa-linkedin"></i></a></li>
-<li><a href="http://kalarikendramdelhi.com"><i class="fab fa-instagram"></i></a></li>
+<li><a href="https://kalarikendramdelhi.com"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="https://kalarikendramdelhi.com"><i class="fab fa-twitter"></i></a></li>
+<li><a href="https://kalarikendramdelhi.com"><i class="fab fa-linkedin"></i></a></li>
+<li><a href="https://kalarikendramdelhi.com"><i class="fab fa-instagram"></i></a></li>
 </ul> --}}
 <!--social_footer_ul ends here-->
 </div>

@@ -145,6 +145,8 @@ img{ max-width:100%;}
 	@include('components/navbar_2-admin')
 </nav>
 @endsection
+@section('background-pg', 'background-color:#e9eaee !important;background-image:none;')
+
 @section('main_content')  
 <div class="container">
   <br><br>

@@ -34,12 +34,26 @@ class HomeController extends Controller
     public function index()
     {
         $ads['ads'] =  Character::where('user_id', auth::user()->id)
-        ->where('delete', 0)
+        ->where('delete', null)
         ->OrderBy('created_at', 'DESC')
         ->paginate(8);
-        return view('panel.index')->with($ads);
+
+        $dels['dels'] = Character::where('user_id', auth::user()->id)
+        ->where('delete', '>', Carbon::now())
+        ->OrderBy('created_at', 'DESC')
+        ->get();
+
+        return view('panel.index')->with($ads)->with($dels);
     }
 
+    public function trash(){        
+        $ads = Character::where('user_id', '=', auth::user()->id)
+        ->where('delete', '>', Carbon::now())
+        ->orderBy('created_at', 'DESC')
+        ->paginate(8);
+
+        return view('panel.trash', compact('ads'));
+    }
 
     public function loadMsgs(request $request){
  
@@ -77,8 +91,8 @@ if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
     public function changeContact(request $request){
 
         $user = auth::user();
-        $user->facebook = $request->input('whatsapp');
-        $user->whatsapp = $request->input('facebook');
+        $user->facebook = $request->input('facebook');
+        $user->whatsapp = $request->input('whatsapp');
 
         if($user->save())
             return redirect()->back()->with('success', 'O seus meios de contatos foram atualizados com sucesso.');
@@ -89,8 +103,20 @@ if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
     
     public function perfil()
     {
-        
-        return view('panel.perfil');
+        $search = Character::where('user_id', '=', auth::user()->id)
+        ->where('delete', null)
+        ->where('permission', 1)        
+        ->get();
+
+        if(auth::user()->group_id > 2)
+            $user = 'Administrador';
+        elseif(count($search) > 0)
+            $user = 'Anunciante';
+        else
+            $user = 'Usuário';
+
+
+        return view('panel.perfil', ['cargo' => $user]);
     }
 
     public function admin(){
@@ -99,17 +125,59 @@ if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
         $threads = Thread::getAllLatest()->get();
 
         $users = User::where('id', '!=', auth::user()->id)->get();
-        $chars = DB::table('characters')->orderBy('created_at', 'DESC')->get();
+
+
+        $chars = DB::table('characters')
+        ->where('delete', null)
+        ->orderBy('created_at', 'DESC')->get();
 
         $charsoff = DB::table('characters')
         ->where('permission', 0)
         ->orderBy('created_at', 'DESC')
         ->get();
 
-        return view('panel.admin', compact('users', 'chars', 'threads', 'charsoff'));
-    }else{
-        return redirect('/');
+        $anund = DB::table('characters')
+        ->where('delete', '>=', Carbon::now())
+        ->orderBy('delete', 'DESC')
+        ->get();
+
+        $anunall = DB::table('characters')
+        ->where('delete', null)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('panel.admin', compact('users', 'chars', 'threads', 'charsoff', 'anund', 'anunall'));
+             }else{
+         return redirect('/');
+         }
+
     }
+
+    public function addPermission(request $request)
+    {
+        if(auth::user()->group_id > 2){
+        if($request->input('userid') == null || !is_numeric($request->input('userid')) || $request->input('userid') == 1)
+            return redirect()->back()->with('error', 'O usuário deve ser preenchido.');
+
+        if($request->input('cargo') == null || !is_numeric($request->input('cargo')) || $request->input('cargo') > 1)
+            return redirect()->back()->with('error', 'O cargo do usuário é inválido ou não foi preenchido.');
+
+        $geting = User::where('id', '=', $request->input('userid'))->value('nick');
+
+        $upuser = User::where('id', '=', $request->input('userid'))
+        ->first()
+        ->update(['group_id' => $request->input('cargo')]);
+
+
+        if($upuser)
+            return redirect()->back()->with('success', 'Foi adicionado o cargo ao usuário '.$geting.' com sucesso.');
+        else
+            return redirect()->back()->with('error', 'Aconteceu algum erro.');
+
+    }else{
+        return redirect('/control-panel');
+    }
+
 
     }
 
@@ -122,22 +190,62 @@ if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
 
                 $pacote = $request->input('pacote');
 
-                if($pacote == '1')
+                $premium = 0;
+
+                if($pacote == '1'){
                 $active_days = Carbon::now()->addDays(15);
+                $premium = 0;
+                }
 
-                if($pacote == '2')
+
+                if($pacote == '2'){
                 $active_days = Carbon::now()->addDays(30);
+                $premium = 1;
+            }
 
-                $update = Character::where('id', '=', $request->input('charid'))->update(['active_days' => $active_days, 'permission' => 1, 'active' => 1]);
+
+                $update = Character::where('id', '=', $request->input('charid'))->update(['active_days' => $active_days, 'permission' => 1, 'active' => 1, 'premium' => $premium]);
                 if($update){
                     return redirect()->back()->with('success', 'Anuncio '.$request->input('charid').'Ativo com sucesso.');
                 }else{
                     return redirect()->back()->withErrors('Erro', 'Aconteceu algum erro.');
                 }
             }else{
-                return redirect('/');
+                return redirect('/control-panel');
             }
     
+    }
+
+    function deletarAnuncio(request $request)
+    {
+        if($request->input('anuncioid') == null || !is_numeric($request->input('anuncioid')))
+            return redirect()->back()->with('error', 'Delete incorreto!');
+
+
+        if(auth::user()->group_id == 4){
+            $del = Character::where('id', '=', $request->input('anuncioid'))
+            ->where('delete', '>=', Carbon::now())
+            ->delete();
+
+            if($del)
+                return redirect()->back()->with('success', 'Anuncio deletado com sucesso.');
+            else
+                    return redirect()->back()->with('error', 'Aconteceu algum erro...');
+            
+        }elseif(auth::user()->group_id == 5){
+
+             $del = Character::where('id', '=', $request->input('anuncioid'))
+                ->delete();
+
+                if($del)
+                return redirect()->back()->with('success', 'Anuncio deletado com sucesso.');
+                else
+                    return redirect()->back()->with('error', 'Aconteceu algum erro...');
+
+        }else{
+            return redirect('/control-panel');
+        }
+
     }
 
 }

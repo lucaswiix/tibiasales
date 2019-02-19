@@ -30,7 +30,7 @@ class CharactersController extends Controller
     public function index()
     {
         $chars['chars'] = Character::where('active', 1)
-        ->where('delete', 0)
+        ->where('delete', null)
         ->where('sold', 0)
         ->orderBy('created_at', 'DESC')
         ->paginate(8);
@@ -74,7 +74,7 @@ class CharactersController extends Controller
      */
     public function findchar(request $request)
     {
-         $char = Character::where('active', '=', true);
+         $char = Character::where('active', true);
 
         if($request->input('world') != 'all'){
             $char->where('world', '=', $request->input('world'));
@@ -147,6 +147,8 @@ class CharactersController extends Controller
                  $char->orderBy('created_at', 'DESC');
                 break;
         }
+       $char->where('delete', null);
+       $char->where('sold', 0);
 
        $chars['chars'] = $char->paginate(8);
        // $chars['chars'] = $charsx;
@@ -206,11 +208,16 @@ class CharactersController extends Controller
         $world = json_decode($search_world,true);
         $world_type = $world['world']['world_information']['pvp_type'];
 
-        if($request->input('magicLevel') > 135)
-            return redirect()->back()->withErrors(['MagicLevel', 'Coloque valores verdadeiros no campo Magic Level.']);
 
-        if($request->input('shielding') > 130)
-            return redirect()->back()->withErrors(['Shielding', 'Coloque valores verdadeiros no campo Shielding.']);
+    if($request->input('distance') != NULL)
+        if(!is_numeric($request->input('magiclevel')) || $request->input('magiclevel') > 135)
+            return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Magic Level.');
+
+    if($request->input('distance') != NULL)
+        if(!is_numeric($request->input('shielding')) || $request->input('shielding') > 130)
+            return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Shielding.');
+
+
 
         $selected = Character::where('user_id', '=', auth::user()->id)
         ->where('name', '=', $request->input('name'))
@@ -219,29 +226,61 @@ class CharactersController extends Controller
 
         if(count($selected) > 0)
             return redirect()->back()->with('error', 'Este personagem já foi postado. Ative-o o post.');
-
         
 
         $char = new Character;
+
+        if($request->input('accept_coins') != NULL && $request->input('accept_coins') == 1){
+            if($request->input('tibiacoins') == NULL || !is_numeric($request->input('tibiacoins')) || $request->input('tibiacoins') > 200000){
+                return redirect()->back()->with('error', 'O valor de TibiaCoins é inválido ou não existe.');
+            }else{
+                $char->accept_tc = 1;
+                $char->price_tc = $request->input('tibiacoins');
+            }
+        }
+
         $char->name = $request->input('name');
         $char->magicLevel = $request->input('magiclevel');
         $char->shielding = $request->input('shielding') ? $request->input('shielding') : 0;
 
+        if($request->input('moeda') == NULL){
+            $char->moeda = 'R$';
+        }else{
+        switch ($request->input('moeda')) {
+            case 'R$':
+                $char->moeda = $request->input('moeda');
+                break;
+                case 'U$':
+                $char->moeda = $request->input('moeda');
+                break;
+                case 'MXN':
+                $char->moeda = $request->input('moeda');
+                break;            
+            default:
+                $char->moeda = 'R$';
+                break;
+            }
+         }
+
         if($info['vocation'] == 'Royal Paladin' || $info['vocation'] == 'Paladin'){
 
-            if($request->input('distance') > 140)
+        if($request->input('distance') != NULL)
+            if(!is_numeric($request->input('distance')) || $request->input('distance') > 140)
                 return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Distance Fight.');
 
             $char->distance_fight = $request->input('distance');        
         }elseif($info['vocation'] == 'Elite Knight' || $info['vocation'] == 'Knight')
 
-            if($request->input('axe') != NULL && $request->input('axe') > 135)
+        if($request->input('axe') != NULL)
+            if(!is_numeric($request->input('axe')) || $request->input('axe') > 135)
                 return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Axe Fight.');
 
-             if($request->input('sword') != NULL && $request->input('sword') > 135)
+        if($request->input('sword') != NULL)
+             if(!is_numeric($request->input('sword')) || $request->input('sword') > 135 )
                 return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Sword Fight.');
 
-            if($request->input('club') != NULL && $request->input('axe') > 135)
+        if($request->input('club') != NULL)            
+            if(!is_numeric($request->input('club')) || $request->input('axe') > 135)
                 return redirect()->back()->with('error', 'Coloque valores verdadeiros no campo Club Fight.');
 
             $char->axe_fight = $request->input('axe') ? $request->input('axe') : 0;
@@ -321,7 +360,7 @@ class CharactersController extends Controller
         {
             $chars['chars'] = Character::where('active', 1)
             ->where('url', '=', $url)
-            ->where('delete', 0)
+            ->where('delete', null)
             ->where('sold', 0)
             ->limit(1)
             ->get();
@@ -359,14 +398,14 @@ class CharactersController extends Controller
     public function update(Request $request, $id)
     {
         if($request->input('price') == NULL || !is_numeric($request->input('price')) || $request->input('price') > 50000)
-            return redirect()->back()->withErrors('erro', 'O valor posto é sureal.');
+            return redirect()->back()->with('error', 'O valor inserido é incorreto ou não existe.');
 
 
        $update = Character::where('id', $id)
        ->where('user_id', '=', auth::user()->id)
        ->update(['price' => $request->input('price')]);
 
-       if($update)
+       if($update)        
     return redirect()->back()->with('success', 'O anuncio foi alterado com sucesso!');
         else
             return redirect()->back()->with('error', 'OPS! Aconteceu algum erro, tenta novamente mais tarde.');
@@ -384,15 +423,18 @@ class CharactersController extends Controller
         if(auth::check()){
         $check = Character::where('id', '=', $id)
         ->where('user_id', '=', auth::user()->id)->get();
+
+        $del_days = Carbon::now()->addDays(15);
+
         if(count($check) > 0){
           $del = Character::where('id', '=', $id)
         ->where('user_id', '=', auth::user()->id)
-        ->update(['delete' => 1]);
+        ->update(['delete' => $del_days]);
         if($del){
-            return redirect()->back()->with('message', ' Anúncio deletado com sucesso.');
+            return redirect()->back()->with('success', ' Anúncio deletado com sucesso.');
             }
         }else{
-            return redirect('/control-panel')->withErrors('erro', 'Este anuncio não foi encontrado.');
+            return redirect('/control-panel')->with('erro', 'Este anuncio não foi encontrado.');
         }
 
             }else{
@@ -401,23 +443,23 @@ class CharactersController extends Controller
             }
     }
 
-    public function restore($id)
+       public function restore($id)
     {
         if(auth::check()){
         $check = Character::where('id', '=', $id)
         ->where('user_id', '=', auth::user()->id)
-        ->where('delete', 1)
+        ->where('delete', '>=', Carbon::now())
         ->get();
         if(count($check) > 0){
           $restore = Character::where('id', '=', $id)
         ->where('user_id', '=', auth::user()->id)
-        ->where('delete', 1)
-        ->update(['delete' => 0]);
+        ->where('delete', '>=', Carbon::now())
+        ->update(['delete' => null]);
         if($restore){
-            return redirect()->back()->with('success', ' Anúncio restaurado com sucesso.');
+            return redirect()->back()->with('success', 'Anúncio restaurado com sucesso.');
             }
         }else{
-            return redirect('/control-panel')->withErrors('erro', 'Este anuncio não foi encontrado.');
+            return redirect('/control-panel')->with('error', 'Este anuncio não foi encontrado.');
         }
             }else{        
         return redirect('/login')->with('error', 'Você não esta logado para fazer isto.');
@@ -477,7 +519,7 @@ class CharactersController extends Controller
 
     function showDonate($id){
         $chars = Character::where('id','=', $id)
-        ->where('delete', 0)
+        ->where('delete', null)
         ->where('sold', 0)
         ->get();
         if(count($chars) > 0){
@@ -490,6 +532,9 @@ class CharactersController extends Controller
 
     function confirmDonate(request $request){
         
+    if($request->input('confirm') == NULL || $request->input('confirm') != 1)
+        return redirect()->back()->with('error', 'Se nem você confirma que transferiu, imagina a gente 🤷‍♂️');
+
     if($request->input('charid') == NULL)
         return redirect()->back()->with('error', 'ID do char inválido. Tente novamente');
 

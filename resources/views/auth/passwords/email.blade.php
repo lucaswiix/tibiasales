@@ -23,7 +23,7 @@
                         </div>
                     @endif
                     <hr>
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
+                     <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -33,10 +33,11 @@
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
+                                    <span class="help-block" style="color:red;font-size: 0.9em;">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
+
                             </div>
                         </div>
 

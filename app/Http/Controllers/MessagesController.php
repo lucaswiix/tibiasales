@@ -77,34 +77,41 @@ class MessagesController extends Controller
         return view('messenger.create', compact('users'));
     }
 
-    public function trust()
+    public function interested(request $request)
     {
-        $users = User::where('id', '!=', Auth::id())
+        if($request->input('userid') == null || !is_numeric($request->input('userid')))
+            return redirect()->back()->with('error', 'Usuário incorreto.');
+
+
+        $users = User::where('id', '=', $request->input('userid'))->get();
+        if(count($users) > 0 ){
+
+
+        if($request->input('proposal') != NULL && $request->input('proposal') == 1)
+            $proposal = true;
+        else
+            $proposal = false;
+        
+        return view('messenger.create', compact('users'))->with([
+            'charid' => $request->input('charid'),
+            'userid' => $request->input('userid'),
+            'proposal'  => $proposal,          
+            ]);
+        }else
+        return redirect()->back()->with('error', 'Este usuario não existe');
+
+    }
+
+    public function intermediate()
+    {
+       $users = User::where('id', '!=', Auth::id())
         ->where('group_id', '=', 1)
         ->get();
 
         $intermedio = true;
 
-        return view('messenger.create', compact('users'))->with(['intermedio' => $intermedio]);
+    return view('messenger.create', compact('users'))->with(['intermedio' => $intermedio]);
     }
-
-
-    public function interested(request $request)
-    {
-        $users = User::where('id', '!=', Auth::id())->get();
-
-        if($request->input('proposal') == 1)
-            $proposal = 1;
-        else
-            $proposal = 'no';
-        
-        return view('messenger.create', compact('users'))->with([
-            'charnick' => $request->input('charnick'),
-            'userid' => $request->input('userid'),
-            'proposal'  => $proposal,          
-            ]);
-    }
-
 
     /**
      * Stores a new message thread.
@@ -114,6 +121,15 @@ class MessagesController extends Controller
     public function store()
     {
         $input = Input::all();
+        if($input['message'] == NULL)
+        	return redirect()->back()->with('error', 'O campo mensagem deve ser preenchido.');
+
+        if(!isset($input['subject']))
+            return redirect()->back()->with('error', 'O campo de assunto deve ser preenchido.');
+
+        if($input['recipients'] == null || count($input['recipients']) == 0)
+            return redirect()->back()->with('error', 'Você não pode enviar esta mensagem.');
+
 
         $thread = Thread::create([
             'subject' => $input['subject'],
@@ -133,6 +149,8 @@ class MessagesController extends Controller
             'last_read' => new Carbon,
         ]);
 
+        if($input['recipients'] == null)
+            return redirect()->back()->with('error', 'Você não pode enviar esta mensagem.');
         // Recipients
         if (Input::has('recipients')) {
             $thread->addParticipant($input['recipients']);

@@ -22,7 +22,7 @@ class Characters extends Migration
             $table->boolean('permission')->default(false);
             $table->boolean('active')->default(true);
             $table->dateTime('active_days');
-            $table->boolean('delete')->default(false);
+            $table->dateTime('delete')->nullable();
             $table->boolean('sold')->default(false);
             $table->dateTime('last_request')->nullable();
 

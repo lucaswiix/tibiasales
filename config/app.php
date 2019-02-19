@@ -2,7 +2,7 @@
 
 return [
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -125,6 +126,12 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
+     //Variaveis TIBIASALES
+
+    'receive_coins_url' => 'Nathalia+suvan',
+    'receive_coins_name' => 'Nathalia suvan',
+
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -135,7 +142,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-
+   
     'providers' => [
 
         /*

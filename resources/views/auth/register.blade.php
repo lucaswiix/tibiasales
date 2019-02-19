@@ -90,7 +90,7 @@ function Trim(str){
                         </div>
                 
                 <div class="form-group"><span class="forgotpass">Em criar a conta você concorda com os </span>
-                <a class="forgotpass" href="/">termos de uso</a>.
+                <a class="forgotpass" href="/terms">termos de uso</a>.
                         </div>
 
                 <div class="form-group">

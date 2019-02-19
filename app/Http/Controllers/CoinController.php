@@ -14,7 +14,7 @@ class CoinController extends Controller
      */
     public function index()
     {
-        //
+        return view('errors.404');
     }
 
     /**

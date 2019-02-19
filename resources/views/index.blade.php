@@ -1,22 +1,45 @@
 @extends('layouts.default')
-@section('title', 'TibiaSales')
+@section('title', 'Characters')
 @section('navbar')
 <nav class="navbar">
   @include('components/navbar_1')
   @include('components/navbar_2')
 </nav>
 @endsection
+{{-- @section('background-pg', '    background-color: #030408;
+    background-image: url(/img/background-artwork2.jpg);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;') --}}
+    
 @section('main_content')
 <div class="container">
-  <div class="first-att">
-    
+  <div class="first-att" style="padding: 20px;overflow: hidden;background: rgba(40,75,99,1);/* Old Browsers */
+background: -moz-linear-gradient(top, rgba(40,75,99,1) 0%, rgba(44,104,143,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(40,75,99,1)), color-stop(100%, rgba(44,104,143,1)));/* Chrome, Safari4+ */
+background: -webkit-linear-gradient(top, rgba(40,75,99,1) 0%, rgba(44,104,143,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(40,75,99,1) 0%, rgba(44,104,143,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(40,75,99,1) 0%, rgba(44,104,143,1) 100%); /* IE 10+ */
+background: linear-gradient(to bottom, rgba(40,75,99,1) 0%, rgba(44,104,143,1) 100%);/* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#284b63', endColorstr='#2c688f', GradientType=0 );/* IE6-9 */">
+    <div class="row">
+      <div class="">
+      <img src="{{asset('img/artwork.png')}}" alt="" width="150" style="margin-top:-20px;">
+      </div>
+      <div class="text-left" style="margin-left:50px;color:yellow;">
+        <h4>@lang('home.first-att-header')</h4>
+        <font color="#fff"><span>@lang('home.first-att-desc')</span></font>
+      </div>
+    </div>
   </div>
   <div class="box-center">
+
     <div class="row">
       <div class="sidebar col-xl-3 col-md-4 col-sm-12">
         <div class="search-box">
           <div class="header">
-            Compre seu Personagem <a href="/" style="color:#fff;"><i class="fas fa-broom"></i></a>
+            @lang('home.buy-your-character')<a href="/" style="color:#fff;"><i class="fas fa-broom"></i></a>
           </div>
           <div class="body">
             <form action="{{route('searchchar')}}" method="get">
@@ -38,10 +61,10 @@
                   @endif
                   
                   <option value="Mais Recente">Mais Recente</option> 
-                  <option value="Menor Preço">Menor Preço</option>
+                  <option value="Menor Preço">Menor @lang('home.price')</option>
                   <option value="Maior Level">Maior Level</option>                  
                   <option value="Menor Level">Menor Level</option>                  
-                  <option value="Maior Preço">Maior Preço</option>
+                  <option value="Maior Preço">Maior @lang('home.price')</option>
                   <option value="Mais Antigo">Mais Antigo</option>                  
                 </select>
               </div>
@@ -113,7 +136,7 @@
                   </label>
                 </div>
               </div>
-              <button type="submit" class="btn-find">Procurar</button>
+              <button type="submit" class="btn-find">@lang('home.search')</button>
             </form>
           </div>
           
@@ -132,7 +155,7 @@
               @else
             <a href="/sales"> 
               @endif
-             <button type="button" class="btn-outblue" style="margin-left:10px;margin-right:10px;"><i class="far fa-address-card"></i> Anunciar um Personagem</button>
+             <button type="button" class="btn-outblue" style="margin-left:10px;margin-right:10px;"><i class="far fa-address-card"></i> @lang('home.announce-character')</button>
             </a>
              <div class="vertical-divider"></div>
              @if(auth::check())
@@ -140,7 +163,7 @@
               @else
               <a href="/login">
               @endif
-             <button type="button" class="btn-outblue" style="margin-left:10px;margin-right:10px;"><i class="fas fa-shield-alt"></i> Solicitar Intermédio</button>             
+             <button type="button" class="btn-outblue" style="margin-left:10px;margin-right:10px;"><i class="fas fa-shield-alt"></i> @lang('home.request-intermediate')</button>             
              </a>
             
           </div>
@@ -148,30 +171,35 @@
         <div class="feed infinite-scroll">
           @if(count($chars) > 0)
           @foreach($chars as $char)
-          <div class="character-list">
-            <div class="character-infos">
+          @if($char->premium == 1)
+          <?php $border = "border:solid 4px #daa520;"; ?>
+          @else
+          <?php $border = ""; ?>          
+          @endif
+          <div class="character-list" >
+            <div class="character-infos" style="{{$border}}" >
               @if($char->sex == 'male')
 
                 @if($char->mage_hat)
 
-                  <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                  <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
 
                 @else
 
                   @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
                   
                 @endif
@@ -179,36 +207,36 @@
               @else 
               {{-- Famele --}}
                 @if($char->mage_hat)
-                <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                 @else
 
                   @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                   @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
                 
                   @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                    <div class="img" style="background-image: url('http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
+                    <div class="img" style="background-image: url('https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10');background-position: -50px -30px;"></div>
                   @endif
 
                 @endif
 
               @endif
               <div class="body-char">
-                <h4 class="header">[{{$char->vocation}}] Level {{$char->level}} - {{$char->world_type}}</h4>
+                <h4 class="header">[{{$char->vocation}}] Level <b>{{$char->level}}</b> - {{$char->world_type}}</h4>
                 <div style="color:#666;font-size:0.9em;">
                   <ul>
-                    @if($char->hide_name == 1)
+                    @if($char->hide_name == 0)
                     <li class="char_name"><img src="/img/char-icon.png">{{$char->name}}</li>
                     @endif
-                    @if($char->hide_world == 1)
+                    @if($char->hide_world == 0)
                     <li class="world"><i class="fas fa-globe-americas"></i> {{$char->world}}</li>
                     @endif
                     @if($char->mage_hat == 1)
@@ -259,12 +287,12 @@
                 </div>
               </div>
               <div class="price">
-                <small>Preço</small>
-                <span class="value">R$ {{$char->price}}</span>
+                <small>@lang('home.price')</small>
+                <span class="value">{{$char->moeda}} {{$char->price}}</span>
                 {{-- <small>U$ 450</small> --}}<br>
                 
                 <div class="next-button">
-                  <button type="button" data-toggle="modal" data-target="#modalwant-{{$char->id}}" class="btnred">Eu quero!</button>
+                  <button type="button" data-toggle="modal" data-target="#modalwant-{{$char->id}}" class="btnred">@lang('home.iwant')!</button>
                 </div>
                 
                 <div class="footer">
@@ -296,26 +324,26 @@
                                 <div class="image-container">
             @if($char->sex == 'male')
                 @if($char->mage_hat)
-                 <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />  
+                 <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />  
 
                 @else
 
                   @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=129&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
                   @endif
 
                   @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=134&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
                   @endif
 
                   @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=144&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                   @endif
 
                   @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=145&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                   @endif
                   
                 @endif
@@ -323,24 +351,24 @@
               @else 
               {{-- Famele --}}
                 @if($char->mage_hat)
-                <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=141&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                 @else
 
                   @if($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin' )
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=137&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
 
                   @endif
 
                   @if($char->vocation == 'Elite Knight' || $char->vocation== 'Knight')
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=142&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                        @endif
 
                   @if($char->vocation == 'Elder Druid' || $char->vocation== 'Druid')
-                  <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=148&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                    @endif
                 
                   @if($char->vocation == 'Master Sorcerer' || $char->vocation== 'Sorcerer')
-                   <img src="http://outfit-images.ots.me/animatedOutfits1090/animoutfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
+                   <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=149&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />
                   @endif
 
                 @endif
@@ -349,14 +377,24 @@
                                 </div>
                                 <div class="userData ml-3">
                                     <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a href="/char/{{$char->url}}">[{{$char->vocation}}] Level {{$char->level}} - {{$char->world_type}}</a></h2>
-                                    <h6 class="d-block"><a href="javascript:void(0)">Link:</a> <input type="text" value="tibiasales.com/char/{{$char->url}}" class="form-control" disabled></h6>
+                                    <h6 class="d-block">
+                                      
+                                      <a href="https://tibiasales.com/char/{{$char->url}}" target="_blank">Link:</a>
+                                      <div class="row" style="margin:0;padding:0;">
+                                       <input type="text" value="https://tibiasales.com/char/{{$char->url}}" class="form-control col-sm-8" id="linkchar-{{$char->id}}" readonly>
+                                       <div class="col-sm-4" style="padding-left: 10px;">
+                                      <button type="button" data-clipboard-target="#linkchar-{{$char->id}}" class="copy btnblue">Copiar</button>
+                                      </div>
+                                      </div>
+
+                                    </h6>
                                     <div class="row" style="margin:0;padding:0;">
                                       @if(auth::check())
 
                                     <h6 class="d-block" style="margin-right:10px;">
                                       <form action="/control-panel/messages/interested" method="POST">
                                         {{csrf_field()}}
-                                        <input type="hidden" value="{{$char->name}}" name="charnick">
+                                        <input type="hidden" value="{{$char->id}}" name="charid">
                                         <input type="hidden" value="{{$char->user_id}}" name="userid">
                                         <button type="submit" class="btnred">Enviar Mensagem</button>
                                       </form>
@@ -367,7 +405,7 @@
                                       <form action="/control-panel/messages/interested" method="POST">
                                         {{csrf_field()}}
                                         <input type="hidden" value="1" name="proposal">
-                                        <input type="hidden" value="{{$char->name}}" name="charnick">
+                                        <input type="hidden" value="{{$char->id}}" name="charid">
                                         <input type="hidden" value="{{$char->user_id}}" name="userid">
                                         <button type="submit" class="btnblue">Oferecer Proposta</button>
                                       </form>
@@ -575,18 +613,30 @@
 
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-5">
-                                                <label style="font-weight:bold;">Preço</label>
+                                                <label style="font-weight:bold;">@lang('home.price')</label>
                                             </div>
                                             <div class="col-md-8 col-6">
-                                                R$ {{$char->price}}
+                                                {{$char->moeda}} {{$char->price}}
                                             </div>
                                         </div>
                                         <hr />
+                            
+                                      @if($char->accept_tc == 1)
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">Tibia Coins</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                {{$char->price_tc}}
+                                            </div>
+                                        </div>
+                                        <hr />
+                                      @endif
 
                                     </div>
                                     <div class="tab-pane fade" id="connectedServices-{{$char->id}}" role="tabpanel" aria-labelledby="ConnectedServices-tab">
                                     
-                                    @if(whatsapp($char->user_id) != NULL && facebook($char->user_id) != NULL)
+                                    @if(whatsapp($char->user_id) != NULL || facebook($char->user_id) != NULL)
 
                                       @if(whatsapp($char->user_id) != NULL)
                                         <div class="row">
@@ -634,17 +684,15 @@
   </div>
 </div>
 {{-- modal fim --}}
-  
           @endforeach
           {{ $chars->links() }}
           @else
-        <center><br><Br><font color="#444">Não encontramos nenhum anuncio 😞</span></center>
+        <center><br><Br><font color="#444">Não encontramos nenhum anuncio 😞</font><br><br></center>
         @endif
       </div>
     </div>
   </div>
 </div>
-
 </div>
 @endsection
 @section('js')
@@ -662,5 +710,34 @@
             }
         });
     });
+</script>
+<script>
+$(document).ready(function(){
+  nav_width = $('.search-box')[0].offsetWidth
+});
+
+$(window).on('scroll load', function(){
+   var win_scl = $(window).scrollTop(); // valor do scroll da janela
+   var nav = $('.search-box'); // menu
+   // var nav_width = nav[0].offsetWidth;
+   var nav_ant = $('.first-att'); // div antes do menu
+   var nav_hgt = nav.outerHeight(); // altura do menu
+   var nav_ant_hgt = nav_ant.outerHeight(); // altura da div antes do menu
+   var nav_ant_top = nav_ant.offset().top; // distância da div antes do menu ao topo
+   var nav_ant_dst = nav_ant_top-win_scl; // distancia do final da div antes do menu ao topo da janela
+
+   if(nav_ant_dst <= nav_ant_hgt && win_scl > nav_ant_hgt) {
+      nav.addClass("sticky");
+       // adiciono margem superior à primeira div depois do menu
+      $(".search-box").css('width',nav_width+'px');
+      // console.log(nav_width);
+
+      $(".search-box+section").css('margin-top',nav_hgt+'px');
+   }else{
+      nav.removeClass("sticky");
+       // retiro margem superior à primeira div depois do menu
+      $(".search-box+section").css('margin-top','0');
+   }
+});
 </script>
 @endsection

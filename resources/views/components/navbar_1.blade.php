@@ -10,19 +10,29 @@
                         <a href="#" class="central-a-link">
                             <img src="{{asset('img/logo-phone.png')}}" alt="">
                             <div class="central-text">
-                                <span>Central de Atendimento</span>                                
+                                <span>Central de atendimento</span>                                
                             </div>
                         </a>
                     </div>
 
                     <div class="right-header" id="right-header-nav">
+                        <div class="link-item">
+                            <a class="header-autogestion-link" data-toggle="modal" data-target="#lang" style="cursor: pointer;">
+                            {{-- <i class="fas fa-globe-americas"></i> --}}
+                            <i class="fas fa-language"></i>
+                            <div class="right-item-box">
+                                <small>{{Config::get('app.locale')}}</small>
+                            </div>
+                            </a>                            
+                        </div>
+
                         @if(Auth::check())
                         <div class="link-item">
                             <a href="/control-panel" class="header-autogestion-link">
                             <i class="fas fa-user-tie"></i>
                             <div class="right-item-box">
                                 <span>{{auth::user()->nick}}</span>
-                                <small>Minha conta</small>
+                                <small>Minha Conta</small>
                             </div>
                             </a>                            
                         </div>
@@ -41,7 +51,7 @@
                             <a href="/sales" class="header-autogestion-link">
                             <i class="fas fa-briefcase"></i>
                             <div class="right-item-box">
-                                <span>Fazer negócio</span>
+                                <span>Fazer Negócio</span>
                                 <small>Anunciar</small>
                             </div>
                         </a>

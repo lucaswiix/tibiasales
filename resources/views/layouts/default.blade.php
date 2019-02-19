@@ -6,13 +6,25 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{asset("img/tibiaseller.png")}}" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
+        <meta property="og:title" content="TibiaSales">
+        <meta property="og:site_name" content="TibiaSales">
+        <meta property="og:description" content="Your website for sales, exchanges and ads for tibia.">
+        <meta property="og:image" content="https://tibiasales.com/img/meta_image.jpg">
+        <meta property="og:url" content="https://tibiasales.com/">
+        <meta property="og:type" content="website">
+        <meta property="fb:app_id" content="2221498281276853" />
+
+        
+
+
+
         <title>TibiaSales - @yield('title')</title>
 
-
+        <script src="{{asset('js/jquery-3.js')}}"></script>        
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+  
         <!-- Styles -->         
             <!-- Compiled and minified CSS -->
    {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> --}}
@@ -22,10 +34,21 @@
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ asset('font-awesome/css/all.css') }}" rel="stylesheet">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9337175347480793",
+    enable_page_level_ads: true
+  });
+</script>
         @yield('style')
+    
     </head>
-    <body>
-<div id="loading-page"><img src="{{asset('/img/loading-page.gif')}}" alt=""></div>
+    <body style="@yield('background-pg')">
+<div id="loading-page">
+  <div id="closed-loading" style="color:#fff;position: absolute;top:0;right:0;margin-right: 20px;margin-top:20px;z-index: 999999999;cursor: pointer;">Travou? Fechar [X]</div>
+  <img src="{{asset('/img/loading-page.gif')}}" alt="">
+</div>
 {{-- Modal 1 --}}
 @if(!auth::check())
 
@@ -91,6 +114,47 @@
 </div>
 </div>
 @endif
+<div class="modal" id="lang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 0px;border:none;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Set Language</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a href="locale/pt-br">
+        <button type="button" class="btndef">
+           🇧🇷 Português
+        </button>
+        </a>
+
+        <a href="locale/es">        
+        <button type="button" class="btndef">
+            🇪🇸 Español
+        </button>
+        </a>
+
+        <a href="locale/en">        
+        <button type="button" class="btndef">
+          🇺🇸 English
+        </button>
+        </a>
+
+        <a href="locale/pl">
+        <button type="button" class="btndef">
+           🇵🇱 Polski
+        </button>
+        </a>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btndef" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {{-- // Fim Modal --}}
 <?php $url = explode('/', $_SERVER["REQUEST_URI"]);
@@ -162,138 +226,37 @@
         </div>  
 
         {{-- scripts --}}
-        <script src="{{asset('js/jquery-3.js')}}"></script>
+        
 
-{{-- <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.js"></script>
-    <script>
-$(document).ready(function(){
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script>
+ var clipboard = new ClipboardJS('.copy');
 
-      $('#find_char').click(function(){
-        // alert('oi');
-            var nome = $('#character_name').val();
-            var get = nome.replace(/\s+/g, '+');
-            
- 
-$.ajax({
-    type: 'get',
-        url: '{{route('findchar')}}', 
-     data: {
-        "_token": "{{ csrf_token() }}",
-        'char' : get,
-        },
-    beforeSend: function() {
-         $('#corpo-anunciar').fadeOut();
-         $('#char-details').html('');
-        $('.loading-char').html('<i class="fas fa-spinner fa-spin"></i> Carregando informações...');
-    },
-    success: function(data) {
-        var c = data['characters']['data'];        
+clipboard.on('success', function(e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
 
-        if(data['characters']['error'] != null){
-            $('.loading-char').html('<i class="far fa-times-circle"></i> Este personagem não foi encontrado.');
-        }else{ 
-             $('.loading-char').html('<i class="fas fa-check"></i> Informações carregadas.');
-             $('.level').html(c.level);
-             $('.voc').html(c.vocation);
-
-            $('.world-type').html(data['characters']['data'][0]['world_type']);
-
-            $('#char-details').append('<li class="char_name" style="display:none;"><img src="/img/char-icon.png"> '+c.name+'</li>');
-
-            $('#char-details').append('<li class="magehat" style="display:none;color:red;"><img src="/img/hat-icon.png" alt="Mage Hat"> Mage Hat </li>');
-            $('#char-details').append('<li class="elementalist2" style="display:none;"><img src="/img/elemental-icon.png" lt="Elemental Spikes Addon"> Elementalist Addon 2 </li>');
-            $('#char-details').append('<li class="neonsparkid" style="display:none;color:red;"><img src="/img/neon_sparkid-icon.png" alt="Neon Sparkid Mount"> Neon Sparkid Mount </li>');
-            
-             $('#char-details').append('<li class="world"><i class="fas fa-globe-americas"></i> '+c.world+'</li>');
-             
-
-             
-
-             
-
-             if(c.former_world){
-             $('#char-details').append('<i class="fas fa-exchange-alt"></i> Transfer Express</li>');
-            }else{
-             $('#char-details').append('<i class="fas fa-exchange-alt"></i> Transfer Normal</li>');            
-               }
-
-               if (c.vocation == 'Royal Paladin' || c.vocation == 'Paladin') {
-                    $('#detalhes-char').append('<div class="form-group col-sm-6"><div class="input-group" style="padding-left:0;max-w"><div class="input-group-prepend"><span class="input-group-text" id="">Distance Fight</span></div><input type="text" pattern="[0-9]+$" value="20" required autocomplete="off" name="distance" class="form-control text-right" maxlength="3"></div></div>');
-                  
-               }else if (c.vocation == 'Elite Knight' || c.vocation == 'Knight' ) {
-                $('#detalhes-char').append('<div class="form-group col-sm-6"><div class="input-group" style="padding-left:0;max-w"><div class="input-group-prepend"><span class="input-group-text" id="">Axe Fight</span></div><input type="text" pattern="[0-9]+$" value="20" name="axe" autocomplete="off" class="form-control text-right" maxlength="3"></div></div>');
-                $('#detalhes-char').append('<div class="form-group col-sm-6"><div class="input-group" style="padding-left:0;max-w"><div class="input-group-prepend"><span class="input-group-text" id="">Sword Fight<span></div><input type="text" autocomplete="off" value="20" pattern="[0-9]+$" name="sword" class="form-control text-right" maxlength="3"></div></div>');
-                $('#detalhes-char').append('<div class="form-group col-sm-6"><div class="input-group" style="padding-left:0;max-w"><div class="input-group-prepend"><span class="input-group-text" id="">Club Fight<span></div><input type="text" autocomplete="off" value="20" pattern="[0-9]+$" name="club" class="form-control text-right" maxlength="3"></div></div>');
-               }
-
-               $('#sendcharname').val(c.name);
-               $('#corpo-anunciar').fadeIn();             
-        }
-    },
-    error: function(xhr) { // if error occured
-        console.log(xhr);
-        $('.loading-char').html('<i class="far fa-times-circle"></i> Este personagem não foi encontrado.');
-    },
-    complete: function() {
-        // console.log('Tudo certo!');
-    },
+    e.clearSelection();
 });
 
-  });
-
-      $('#hidenick').click(function(){
-        $('.char_name').toggle();
-      });
-      $('#hideworld').click(function(){
-        $('.world').toggle();
-      });
-
-      $('#hat').click(function(){
-        $('.magehat').toggle();
-      });
-      $('#element').click(function(){
-        $('.elementalist2').toggle();
-      });
-      $('#neon').click(function(){
-        $('.neonsparkid').toggle();
-      });
-
-      });
+clipboard.on('error', function(e) {
+    console.error('Action:', e.action);
+    console.error('Trigger:', e.trigger);
+});
 </script>
-<script>
-    function valida_nome() {
-        var filter_nome = /^([a-zA-Z]|)+$/;
-        if (!filter_nome.test(document.getElementById("input_nome").value)) {
-            document.getElementById("input_nome").value = '';
-            document.getElementById("input_nome").placeholder = "Nome inválido";
-            document.getElementById("input_nome").style.borderColor = "#ff0000";
-            document.getElementById("input_nome").style.outline = "#ff0000";
-            document.getElementById("input_nome").focus();
-            document.getElementById("input_nome").onkeydown = function keydown_nome() {
-                document.getElementById("input_nome").placeholder = "";
-                document.getElementById("input_nome").style.borderColor = "#999999";
-                document.getElementById("input_nome").style.outline = null;
-            }
-            return false;
-        } else {
-            document.getElementById("input_nome").value = '';
-            document.getElementById("input_nome").placeholder = "Nome Válido";
-        }
-        return true;
-    }
 
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.js"></script>
 
 
 @yield('js')
 
 <script>
-    $('#submitchar').click(function(){
+    $('#formChars').submit(function(){
         $('#loading-page').fadeIn();
+    });
+    $('#closed-loading').click(function(){
+      $('#loading-page').fadeOut();
     });
 </script>
 <script>

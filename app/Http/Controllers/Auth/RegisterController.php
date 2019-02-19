@@ -49,7 +49,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {       
         return Validator::make($data, [
-            'nick' => 'required|string|max:255|unique:users|regex:[^A-Za-z0-9]',
+            'nick' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -63,7 +63,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data['nick'] = str_replace(" ","",$data['nick']);
+        $data['nick'] = str_replace(" ","", $data['nick']);
+        $data['nick'] = strtolower($data['nick']);
+
         
 
         return User::create([
