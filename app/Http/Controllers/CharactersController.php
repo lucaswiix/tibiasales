@@ -358,16 +358,43 @@ class CharactersController extends Controller
         $check = Character::where('url', '=', $url)->get();
         if(count($check) == 1)
         {
-            $chars['chars'] = Character::where('active', 1)
+            $chars = Character::where('active', 1)
             ->where('url', '=', $url)
             ->where('delete', null)
             ->where('sold', 0)
             ->limit(1)
             ->get();
 
+
+            foreach ($chars as $char) {
+                $ads = Character::where('active', 1)
+            ->where('url', '!=', $url)
+            ->where('delete', null)
+            ->where('sold', 0)
+            ->where('vocation', '=', $char->vocation)
+            ->orderBy('created_at', 'ASC')
+            ->limit(7)
+            ->get();                
+
+            }
+                     
+                if(count($ads) < 7){
+                    $ads = Character::where('active', 1)
+                        ->where('url', '!=', $url)
+                        ->where('delete', null)
+                        ->where('sold', 0)
+                        ->orderBy('created_at', 'ASC')
+                        ->limit(7)
+                        ->get();
+                }       
+
+
+
+            
+
             if(count($chars) > 0)
             {
-                return view('chars.show')->with($chars);
+                return view('chars.show', compact('chars', 'ads'));
             }else{
                 return view('chars.show');
             }

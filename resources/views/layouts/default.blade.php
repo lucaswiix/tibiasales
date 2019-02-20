@@ -21,26 +21,20 @@
 
         <title>TibiaSales - @yield('title')</title>
 
-        <script src="{{asset('js/jquery-3.js')}}"></script>        
+        <script src="{{asset('js/jquery-3.js')}}"></script>   
+        @yield('style-first')     
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
   
         <!-- Styles -->         
             <!-- Compiled and minified CSS -->
    {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> --}}
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <link rel="stylesheet" href="{{asset('css/app.css')}}">        
+        {{-- <link rel="stylesheet" href="{{asset('css/app.css')}}">         --}}
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ asset('font-awesome/css/all.css') }}" rel="stylesheet">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-9337175347480793",
-    enable_page_level_ads: true
-  });
-</script>
         @yield('style')
     
     </head>
@@ -50,6 +44,7 @@
   <img src="{{asset('/img/loading-page.gif')}}" alt="">
 </div>
 {{-- Modal 1 --}}
+
 @if(!auth::check())
 
 <div class="modal fade " id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -68,13 +63,18 @@
                             <form id="loginForm" method="POST" action="{{ route('login') }}" novalidate="novalidate">
                                 {{csrf_field()}}
                                 <div class="form-group">
-                                    <label for="username" class="col-form-label">E-mail</label>
-                                    <input type="email" class="form-control" id="email"
+                                    <label for="email-modal" class="col-form-label">E-mail</label>
+                                    <input type="email" class="form-control" id="email-modal"
                                     name="email" value="{{ old('email') }}" required title="Please enter you Email" placeholder="example@gmail.com"> <span class="form-text"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="col-form-label">Senha</label>
-                                    <input type="password" class="form-control" id="password"
+                                  @if(App::isLocale('es'))
+                                    <label for="password-modal" class="col-form-label">Contraseña</label>
+                                    @else
+                                    <label for="password-modal" class="col-form-label">Senha</label>
+
+                                    @endif
+                                    <input type="password" class="form-control" id="password-modal"
                                     name="password" required title="Please enter your password"> <span class="form-text"></span>
                                 </div>
                                 @if (isset($errors) && $errors->any())
@@ -105,7 +105,12 @@
                         <li><a href="/help"><u>Mais Vantagens</u></a>
                     </li>
                 </ul>
-                <p><a href="/register" class="btn btn-info btn-block">Criar uma conta Agora!</a>
+                @if(App::isLocale('es'))
+                <p><a href="/register" class="btn btn-info btn-block">¡Crear una cuenta ahora!</a>
+
+                @else
+                <p><a href="/register" class="btn btn-info btn-block">Criar uma conta agora!</a>
+                  @endif
             </p>
         </div>
     </div>
@@ -124,25 +129,25 @@
         </button>
       </div>
       <div class="modal-body">
-        <a href="locale/pt-br">
+        <a href="/locale/pt-br">
         <button type="button" class="btndef">
            🇧🇷 Português
         </button>
         </a>
 
-        <a href="locale/es">        
+        <a href="/locale/es">        
         <button type="button" class="btndef">
             🇪🇸 Español
         </button>
         </a>
 
-        <a href="locale/en">        
+        <a href="/locale/en">        
         <button type="button" class="btndef">
           🇺🇸 English
         </button>
         </a>
 
-        <a href="locale/pl">
+        <a href="/locale/pl">
         <button type="button" class="btndef">
            🇵🇱 Polski
         </button>
@@ -217,16 +222,37 @@
 
         @yield('footer')
 
-        @if(auth::check())
-            @if(!auth::user()->facebook || !auth::user()->whatsapp)
-
-            @endif
-        @endif
-
+        
         </div>  
 
         {{-- scripts --}}
-        
+  @if(auth::check() && auth::user()->whatsapp == null && auth::user()->facebook == null)
+<div aria-live="polite" aria-atomic="true" style="position: relative;">
+  <!-- Position it -->
+  <div style="position: fixed; bottom: 0;left:0;margin-left:50px;margin-bottom: 20px;">
+
+    <!-- Then put toasts within -->
+    <div class="toast" role="alert" id="toastnot" aria-live="assertive" aria-atomic="true" data-autohide="false">
+      <div class="toast-header">
+        <img src="{{asset('img/logo-phone.png')}}" class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Hey, you!</strong>
+        <small class="text-muted"></small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        @if(App::isLocale('es'))        
+      ¡Añade un medio de contacto! Esto ayuda a encontrarte. Te voy a llevar allí, <a href="/control-panel/perfil#profile-tab">Haga clic aquí.</a>
+        @else
+        Adicione um meio de contato! Isto ajuda a te encontrar. Vou te levar lá, <a href="/control-panel/perfil#profile-tab">Clique aqui.</a>
+        @endif
+      </div>
+    </div>
+
+  </div>
+</div>
+@endif      
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 <script>
@@ -250,7 +276,6 @@ clipboard.on('error', function(e) {
 
 
 @yield('js')
-
 <script>
     $('#formChars').submit(function(){
         $('#loading-page').fadeIn();
@@ -264,8 +289,9 @@ clipboard.on('error', function(e) {
   $('[data-toggle="tooltip"]').tooltip()
 })
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
     <!-- Compiled and minified JavaScript -->

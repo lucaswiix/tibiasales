@@ -6,6 +6,13 @@
   @include('components/navbar_2')
 </nav>
 @endsection
+@section('style')
+<style>
+  .img-thumbnail{
+    border:0 !important;
+  }
+</style>
+@endsection
 {{-- @section('background-pg', '    background-color: #030408;
     background-image: url(/img/background-artwork2.jpg);
     background-position: center center;
@@ -320,8 +327,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#284b63', end
                 <div class="card" style="border:none;">
                     <div class="card-body">
                         <div class="card-title mb-4">
-                            <div class="d-flex justify-content-start">
-                                <div class="image-container">
+                            <div class="d-flex justify-content-start" >
+                                <div class="image-container" >
             @if($char->sex == 'male')
                 @if($char->mage_hat)
                  <img src="https://outfit-images.ots.me/idleOutfits1092/outfit.php?id=130&addons=3&head=5&body=9&legs=18&feet=10" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail" />  
@@ -424,7 +431,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#284b63', end
                                       <button class="btnblue" data-toggle="tooltip" data-placement="bottom" title="Você não esta logado.">Oferecer Proposta</button>
                                     </h6>       
                                     </div>    
-                                    @endif               
+                                    @endif
+  
                                 </div>
                                 <div class="ml-auto">
                                     <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />
@@ -440,6 +448,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#284b63', end
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices-{{$char->id}}" role="tab" aria-controls="connectedServices" aria-selected="false">Contato Social</a>
+                                    </li>
+                                    <li class="nav-item" style="background-color:#daa520;border-radius: 4px 4px 0px 0px;border-bottom: 1px solid #ccc;">
+                                        @if(App::isLocale('es'))
+                                        <a class="nav-link" id="connectedServices-tab" href="/char/{{$char->url}}" style="color:#fff;">Ver personaje <i class="fas fa-walking"></i></a>
+                                        @else
+                                        <a class="nav-link" id="connectedServices-tab"  href="/char/{{$char->url}}"aria-selected="false" style="color:#fff;">Ver Personagem <i class="fas fa-walking"></i></a>
+                                        @endif
                                     </li>
                                 </ul>
                                 <div class="tab-content ml-1" id="myTabContent">

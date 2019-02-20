@@ -21,15 +21,28 @@
 
         <div class="back-page">
             <div class="back-page">
+                @if(App::IsLocale('es'))
                 <a href="/"><i class="fas fa-home"></i> Inicio</a> 
                 <i class="fas fa-angle-right"></i>
                 <a href="/sales">Anunciar</a> 
                 <i class="fas fa-angle-right"></i>
                  Login</div>
+                 @else
+                 <a href="/"><i class="fas fa-home"></i> Home</a> 
+                <i class="fas fa-angle-right"></i>
+                <a href="/sales">Anunciar</a> 
+                <i class="fas fa-angle-right"></i>
+                 Login</div>
+                 @endif
         </div>
         <div class="anunciar-box" align="center">
+             @if(App::IsLocale('es'))
+             <header>Hacer Login</header>
+        <small>Tenga acceso a sus anuncios.</small>
+             @else
         <header>Fazer Login</header>
-        <small>Tenha acesso aos seus anuncios.</small>
+        <small>Tenha acesso aos seus anúncios.</small>
+        @endif
         <div class="buttons">
             <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
@@ -47,7 +60,12 @@
                 </div>
                 
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    @if(App::IsLocale('es'))
+                    <label for="password" class="control-label">Contraseña</label>
+
+                    @else
                     <label for="password" class="control-label">Senha</label>
+                    @endif
                     <div>
                         <input id="password" type="password" class="form-control" name="password" required autocomplete="off">
                         @if ($errors->has('password'))
@@ -56,7 +74,13 @@
                         </span>
                         @endif
                         <a class="forgotpass" href="{{ route('password.request') }}">
-                                   Esqueci a minha senha
+                            @if(App::IsLocale('es'))                                 
+                                Olvidé mi contraseña
+                    @else
+                                                       Esqueci a minha senha
+
+                    @endif
+                                   
                         </a>
                     </div>
                 </div>
@@ -75,8 +99,13 @@
             
             
             <div class="no-acc">
-                <span>Não tem conta?</span>
-                <a href="/register">Criar conta</a><br>
+                @if(App::isLocale('es'))
+                        <span>¿No tienes cuenta?</span>
+                        <a href="/register">Crear cuenta</a>
+                        @else
+                        <span>Não tem conta?</span>
+                        <a href="/register">Criar conta</a>
+                        @endif
             </div>
         </div>
     </div>
