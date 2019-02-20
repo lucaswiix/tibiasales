@@ -16,7 +16,17 @@
         <meta property="fb:app_id" content="2221498281276853" />
 
         
-
+      
+        <link rel="manifest" href="{{asset('/manifest.json')}}" />
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+  var OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "1fcf768a-5bb6-41db-86e1-37130b6fa105",
+    });
+  });
+</script>
 
 
         <title>TibiaSales - @yield('title')</title>
