@@ -9,8 +9,8 @@
                     <div class="central-atendimento">
                         <a href="#" class="central-a-link">
                             <img src="{{asset('img/logo-phone.png')}}" alt="">
-                            <div class="central-text">
-                                <span>Central de atendimento</span>                                
+                            <div class="central-text">                                
+                                <span>@lang('home.call-center')</span>                                
                             </div>
                         </a>
                     </div>
@@ -32,7 +32,7 @@
                             <i class="fas fa-user-tie"></i>
                             <div class="right-item-box">
                                 <span>{{auth::user()->nick}}</span>
-                                <small>Minha Conta</small>
+                                <small>@lang('home.my-account')</small>
                             </div>
                             </a>                            
                         </div>
@@ -42,7 +42,7 @@
                             <i class="fas fa-user-alt"></i>
                             <div class="right-item-box">
                                 <span>Iniciar Sessão</span>
-                                <small>Minha Conta</small>
+                                <small>@lang('home.my-account')</small>
                             </div>
                             </a>                            
                         </div>
@@ -51,7 +51,7 @@
                             <a href="/sales" class="header-autogestion-link">
                             <i class="fas fa-briefcase"></i>
                             <div class="right-item-box">
-                                <span>Fazer Negócio</span>
+                                <span>@lang('home.make-business')</span>
                                 <small>Anunciar</small>
                             </div>
                         </a>
@@ -60,10 +60,30 @@
                         <div class="link-item" >
                             <a href="/help" class="header-autogestion-link">
                             <i class="fas fa-question-circle"></i>
-                                <span>Ajuda</span>
+                                <span>@lang('home.help')</span>
                             </a>
                         </div>
+
                     </div>
                      
+                     <div class="icons row iconsmbcheck" >
+                        <div class="link-item" style="padding:0px 15px 0px 0px;font-size: 2em;">
+                            <a href="/login" class="header-autogestion-link" style="color:#444;">
+                            <i class="fas fa-sign-in-alt"></i>                              
+                            </a>
+                        </div>
+
+                        <div class="link-item" style="padding:0px 15px 0px 0px;font-size: 2em;">
+                            <a href="/sales" class="header-autogestion-link" style="color:#444;">
+                            <i class="fas fa-shopping-cart"></i>                   
+                            </a>
+                        </div>
+
+                       <div class="link-item" style="padding:0px 15px 0px 0px;font-size: 2em;">
+                            <a href="/help" class="header-autogestion-link" style="color:#444;">
+                            <i class="fas fa-question"></i>                               
+                            </a>
+                        </div>
+                     </div>
                 </div>                
             </div>

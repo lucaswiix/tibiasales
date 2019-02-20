@@ -21,13 +21,21 @@
         <div class="back-page">
 
             <div class="back-page">
-                <a href="/">Inicio</a>
-                 <i class="fas fa-angle-right"></i>
-                 <a href="/sales">Anunciar</a>
-                 <i class="fas fa-angle-right"></i>                 
-                  Criar conta
-            </div>
-        </div>
+                @if(App::IsLocale('es'))
+                <a href="/"><i class="fas fa-home"></i> Inicio</a> 
+                <i class="fas fa-angle-right"></i>
+                <a href="/sales">Anunciar</a> 
+                <i class="fas fa-angle-right"></i>
+                 Crear cuenta
+                 @else
+                 <a href="/"><i class="fas fa-home"></i> Home</a> 
+                <i class="fas fa-angle-right"></i>
+                <a href="/sales">Anunciar</a> 
+                <i class="fas fa-angle-right"></i>
+                 Criar Conta
+                 @endif
+             </div>
+            </div>        
         <div class="anunciar-box" align="center" style="min-width: 500px;">
             @if(count($errors)>0)
             <div class="alert alert-danger col-sm-12" role="alert">
@@ -38,14 +46,25 @@
                 @endforeach
             </div>
             @endif
+                @if(App::IsLocale('es'))
+                <header>Crear Cuenta</header>
+        <small>Anuncie, negocie y venda. Simples así.</small>
+
+                @else
         <header>Criar Conta</header>
         <small>Anuncie, negocie e venda. Simples assim.</small>
+        @endif
         <div class="buttons">
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}" style="color:#666;">
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('nick') ? ' has-error' : '' }}">
+                @if(App::IsLocale('es'))
+
+                            <label for="nick" class="control-label">Nickname <small>* Espacios son ignorados</small></label>
+                            @else
                             <label for="nick" class="control-label">Nick <small>* Espaços são ignorados</small></label>
+                            @endif
 
                             <div>
                                 <script type="text/javaScript">
@@ -55,7 +74,12 @@ function Trim(str){
 </script>
                                 <input id="nick" type="text" id="input_nome" class="form-control" name="nick" value="{{ old('nick') }}" required autofocus onkeyup="this.value = Trim( this.value )" autocomplete="off">
                             </div>
-                            <small>O nome pelo char será conhecido.</small>
+                @if(App::IsLocale('es'))
+                            <small>El nombre por el que será conocido.</small>
+                
+                @else
+                            <small>O nome pelo qual será conhecido.</small>
+                            @endif
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -64,11 +88,20 @@ function Trim(str){
                             <div>
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                             </div>
-                            <small>Nunca divulgaremos seu e-email, pode ficar tranquilo.</small>
+                @if(App::IsLocale('es'))
+                <small>Nunca divulgaremos su e-mail, puede estar tranquilo.</small>
+                @else
+                <small>Nunca divulgaremos seu e-email, pode ficar tranquilo.</small>
+                @endif
+
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="control-label">Senha</label>
+                            @if(App::IsLocale('es'))
+                    <label for="password" class="control-label">Contraseña</label>
+                    @else
+                    <label for="password" class="control-label">Senha</label>
+                    @endif
 
                             <div>
                                 <input id="password" type="password" class="form-control" name="password" required>
@@ -82,28 +115,52 @@ function Trim(str){
                         </div>
 
                         <div class="form-group">
-                            <label for="password-confirm" class="control-label">Confirmar Senha</label>
+                            @if(App::IsLocale('es'))
+                    <label for="password" class="control-label">Confirmar contraseña</label>
+
+                    @else
+                    <label for="password" class="control-label">Confirmar senha</label>
+                    @endif
 
                             <div>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
                 
-                <div class="form-group"><span class="forgotpass">Em criar a conta você concorda com os </span>
+                
+                <div class="form-group">
+                            @if(App::IsLocale('es'))
+                    <span class="forgotpass">En crear la cuenta usted concuerda con los </span>
+                <a class="forgotpass" href="/terms">terminos de uso</a>.
+                @else
+                <span class="forgotpass">Em criar a conta você concorda com os </span>
                 <a class="forgotpass" href="/terms">termos de uso</a>.
+                @endif
                         </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn-fazerLogin" onclick="valida_nome()">
                     <i class="fas fa-sign-in-alt"></i>
-                    Criar Conta</button>
+                            @if(App::IsLocale('es'))
+                            Crear Cuenta
+                            @else
+                    Criar Conta
+                    @endif
+                </button>
                 </div>
                     </form>
                     <div class="spacediv"></div>
 
                     <div class="no-acc">
+                        @if(App::IsLocale('es'))
+                <span>¿Ya tienes cuenta?</span>
+                <a href="/login">Hacer Login</a>
+                <br>
+                @else
                 <span>Você já tem conta?</span>
-                <a href="/login">Fazer Login</a><br>
+                <a href="/login">Fazer Login</a>
+                <br>
+                @endif
             </div>
 
                 </div>

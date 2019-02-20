@@ -7,7 +7,7 @@
                         <div class="button-circle-icon link-char">
                             {{-- <img src="{{asset('img/link-char.png')}}" alt=""> --}}
                         </div>
-                        <span>Personagens</span>
+                        <span>@lang('home.Characters')</span>
                     </a>
                 </li>                
                 @if(auth::check() && auth::user()->group_id > 2)

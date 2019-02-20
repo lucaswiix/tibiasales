@@ -9,36 +9,6 @@
 @section('background-pg', 'background-color:#e9eaee !important;background-image:none;')
 
 @section('main_content')
-@if(auth::user()->whatsapp == null && auth::user()->facebook == null)
-<div class="modal fade" id="addContact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="border:0;border-radius: 0;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Adicione um contato! 👀✍</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <font color="red"><small>Adicionar um meio de contato ajuda o comprador a comunicar com você.</small></font><br><br>
-        <div>
-          Adicione um Facebook ou seu número de whatsapp para ajudar o comprador a te encontrar! 
-          <br><br><small>*Lembre-se: Os dados postados ficarão publicos!</small>  
-
-        </div>
-        <br><br> 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btndef" data-dismiss="modal">Close</button>
-        <a href="/control-panel/perfil#profile-tab">
-        <button type="button" class="btnred">Adicionar Contato</button>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-@endif
-
 <div class="allanunc col-md-12">
 	<div class="boxing container">
 		<div class="novo">
@@ -134,7 +104,7 @@
 					<div class="character-list" style="padding-bottom:0;-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 						-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 						box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);">
-						<div class="character-infos" style="overflow-x:auto;box-shadow:none;">
+						<div class="character-infos" style="box-shadow: none;">
 							@if($ad->sex == 'male')
 
                 @if($ad->mage_hat)
@@ -271,11 +241,29 @@
 							@endif
 							@endif
 							<button type="button" class="btndef" data-toggle="modal" data-target="#modalcharedit-{{$ad->id}}"><i class="fas fa-pencil-alt"></i>
-							Alterar Anúncio</button>							
+
+                @if(App::isLocale('es'))
+							Cambiar Anuncio
+              @else
+              Alterar Anúncio
+              @endif			
+              </button>				
+              @if(App::isLocale('es'))
 							<a href="/characters/del/{{$ad->id}}" >
-							<button type="button" class="btndef" onclick="return confirm('Tem certeza que deseja deletar isto?');">
-							<i class="fas fa-trash-alt"></i> Excluir </button>
+							<button type="button" class="btndef" onclick="return confirm('¿Está seguro de que desea borrar esto?');">
+							<i class="fas fa-trash-alt"></i>              
+              
+              Borrar
+                  </button>
 							</a>
+              @else
+              <a href="/characters/del/{{$ad->id}}" >
+              <button type="button" class="btndef" onclick="return confirm('Tem certeza que deseja deletar isto?');">
+              <i class="fas fa-trash-alt"></i>               
+              Excluir
+                  </button>
+              </a>
+              @endif 
 						</div>
 						
 					</div>
@@ -287,7 +275,11 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Alterar anuncio</h5>
+        @if(app::isLocale('es'))
+        <h5 class="modal-title" id="exampleModalCenterTitle">Cambiar anuncio</h5>
+        @else
+        <h5 class="modal-title" id="exampleModalCenterTitle">Alterar anúncio</h5>
+        @endif
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -302,7 +294,7 @@
         <div class="form-group col-md-6">
                                 <div class="input-group" style="padding-left:0;">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="">R$</span>
+                                        <span class="input-group-text" id="">{{$ad->moeda}}</span>
                                     </div>
                                     <input type="text" name="price" class="form-control col-md-4" autocomplete="off" style="text-align:right;" maxlength="6" value="{{$ad->price}}" pattern="[0-9]+$">
                                 </div>
@@ -310,7 +302,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btnred">Salvar</button>
+        @if(App::isLocale('es'))
+        <button type="submit" class="btnred">Guardar</button>
+        @else
+        <button type="submit" class="btnred">Salvar</button>        
+        @endif
       </div>
   </form>
     </div>
@@ -319,7 +315,11 @@
 			{{-- Fim Modal --}}
 			@endforeach
 			@else
+        @if(app::isLocale('es'))
+        <div class="col-sm-12" style="margin-top:4em;text-align: center;display: block;">Usted todavía no tiene ningún anuncio.</div>
+        @else
 			<div class="col-sm-12" style="margin-top:4em;text-align: center;display: block;">Você ainda não possui nenhum anúncio.</div>
+      @endif
 			@endif
 
 			
@@ -335,9 +335,10 @@
 @section('js')
 @if(auth::user()->whatsapp == null && auth::user()->facebook == null)
 <script>
-  $(document).ready(function(){
-    $('#addContact').modal('show');
-  });
+    $(document).ready(function(){
+         $('#toastnot').toast('show')
+
+    })
 </script>
 @endif
 @endsection

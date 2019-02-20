@@ -17,6 +17,7 @@ return [
 	'call-center'	=>	'Central de atendimento',
 	'sell_char-placeholder'	=> 'Nome do char a ser anunciado',
 	'money-and-price'	=>	'Moeda e Valor',
+	'Characters'	=>	'Personagens',
 
  
 ];
