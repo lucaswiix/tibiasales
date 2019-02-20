@@ -161,6 +161,28 @@
   </div>
 </div>
 
+<div class="modal" id="call-center" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 0px;border:none;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Call-center</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        To contact us you can send e-mail to:<br><b>
+        <a href="mailto:contato@tibiasales.com?subject=Call Center">contato@tibiasales.com</a></b>
+                
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btndef" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {{-- // Fim Modal --}}
 <?php $url = explode('/', $_SERVER["REQUEST_URI"]);
         if(!isset($url[2])) $url[2] = ''; ?>

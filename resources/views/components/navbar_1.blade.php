@@ -7,7 +7,7 @@
                 
                 
                     <div class="central-atendimento">
-                        <a href="#" class="central-a-link">
+                        <a style="cursor: pointer;" data-toggle="modal" data-target="#call-center" class="central-a-link">
                             <img src="{{asset('img/logo-phone.png')}}" alt="">
                             <div class="central-text">                                
                                 <span>@lang('home.call-center')</span>                                
