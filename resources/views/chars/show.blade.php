@@ -60,11 +60,11 @@
                             @if($char->vocation == 'Elder Druid' || $char->vocation == 'Druid')
                             <img src="{{asset('img/class_icon_druid.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
                             @elseif($char->vocation == 'Master Sorcerer' || $char->vocation == 'Sorcerer')
-                            <img src="{{asset('img/class_icon_Sorcerer.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
+                            <img src="{{asset('img/class_icon_sorcerer.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
                             @elseif($char->vocation == 'Royal Paladin' || $char->vocation == 'Paladin')
-                            <img src="{{asset('img/class_icon_Paladin.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
+                            <img src="{{asset('img/class_icon_paladin.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
                             @elseif($char->vocation == 'Elite Knight' || $char->vocation == 'Knight')
-                            <img src="{{asset('img/class_icon_Knight.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
+                            <img src="{{asset('img/class_icon_knight.png')}}" alt="{{$char->vocation}}" style="width: 100%;height: auto;">
                             @endif
                         </div>
                         <span class="Level tip tpd-delegation-uid-1" title="">{{$char->level}}</span>
@@ -189,7 +189,10 @@
             <div class="container" >
                 <div class="life-owner LifeOwnerSummonerTopCenter">
                     <!-- TibiaSales.com 2 - 970x250 Fixed (5ba366a846e0fb0001bca397) - 970x250 - Place in <BODY> of page where ad should appear -->
-                    {{-- <div class="vm-placement" data-id="5ba366a846e0fb0001bca397" style="width:970px;height:250px"></div> --}}
+                    <div class="vm-placement" data-id="5ba366a846e0fb0001bca397" style="width:100%;border-radius:4px;background-color:#ccc;height:100px;padding:20px">
+                        
+
+                    </div>
                     <!-- / TibiaSales.com 2 - 970x250 Fixed (5ba366a846e0fb0001bca397) -->
                 </div>
                 <div class="ContentWrap tabItems" id="SummonerLayoutContent">

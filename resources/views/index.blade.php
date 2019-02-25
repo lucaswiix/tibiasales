@@ -176,6 +176,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#284b63', end
           </div>
         </div>
         <div class="feed infinite-scroll">
+
           @if(count($chars) > 0)
           @foreach($chars as $char)
           @if($char->premium == 1)
